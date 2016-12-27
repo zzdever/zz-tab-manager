@@ -1,0 +1,49 @@
+{
+	"manifest_version": 2,
+
+	"name": "ZZ Tab Manager",
+	"description": "Manage your tons of tabs in an organised way.",
+	"version": "0.1",
+
+	"permissions": [
+		"tabs",
+		"activeTab",
+		"bookmarks",
+		"storage",
+		"system.display",
+		"chrome://favicon/*",
+		"*://*/*"
+	],
+	
+	"browser_action": {
+        "default_icon": {
+           "19": "img/icon19.png",
+           "38": "img/icon38.png"
+        },
+		"default_popup": "popup.html",
+		"default_title": "Manage tab"
+	},
+	
+	"icons": {
+		"16": "img/icon16.png",
+		"32": "img/icon32.png",
+		"64": "img/icon64.png",
+		"128": "img/icon128.png"
+	},
+	
+	"options_page": "options.html"
+	
+/*	"web_accessible_resources": ["unsus.html"],*/
+
+	/*
+	"content_scripts": [
+		{
+			"matches": ["<all_urls>"],
+			"css": ["mystyles.css"],
+			"js": ["content_script.js"],
+			"run_at": "document_start"
+			"all_frames": true,
+			"match_about_blank": true
+		}
+	]*/
+}

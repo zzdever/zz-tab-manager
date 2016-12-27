@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>ZZ Tab Manager</title>
+	
+	<!-- <link rel="stylesheet" href="3rd/jquery-ui-1.12.1/jquery-ui.min.css"> -->
+	<!-- <link rel="stylesheet" href="3rd/jquery-ui-1.12.1/jquery-ui.structure.min.css"> -->
+	<!-- <link href="3rd/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet"> -->
+	
+	<style>
+	body {
+		font-family:"Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+		font-size:100%;
+		width:400px;
+	}
+	
+	.tab_favicon {
+		width:20px;
+		height:20px;
+	}
+	
+	.tab_block_container {
+		border-bottom:solid 1px rgba(200,200,200,0.1);
+		min-height:30px;
+	}
+	.tab_block_container:hover {
+		background:rgba(50,50,50,0.2);
+	}
+	
+	.inplace_contextmenu {
+		position:absolute;
+		z-index:10;
+		display:none;
+		white-space:nowrap;
+	}
+	
+	.icon_button {
+		border:solid 1px rgba(50,50,50,0.2);
+		border-radius:3px;
+		padding:3px;
+	}
+	.icon_button:hover {
+		background:rgba(100,100,100,0.2);
+	}
+	
+	div#overlay {
+		opacity:0;
+		width:100%;
+		height:100%;
+		z-index:5;
+		top:0;
+		left:0;
+		position:fixed;
+		display:none;
+	}
+		
+	</style>
+
+</head>
+<body>
+	
+	<div id="overlay"></div>
+	
+	<ul id="window_contextmenu" class="inplace_contextmenu">
+		<li>
+			<div id="link_task">Create/link task</div>
+		</li>
+		<li>
+			<div id="free_memory">Free memory</div>
+		</li>
+		<li>
+			<div id="suspend_window">Suspend window</div>
+		</li>
+		<li>
+			<div id="restore_window">Restore window</div>
+		</li>
+	</ul>
+	
+	<ul id="tab_contextmenu" class="inplace_contextmenu">
+		<li>
+			<div id="open_in_new_window">Open in new window</div>
+		</li>
+		<li>
+			<div id="suspend_tab">Suspend tab</div>
+		</li>
+		<li>
+			<div id="restore_tab">Restore tab</div>
+		</li>
+	</ul>
+	
+	
+	<div id="app">
+		
+		<div v-for="window in windows" class="window_container" zz_window_index="{{ $index }}">
+			<!-- <div class="window_head" v-on:contextmenu="contextmenu_window($event, window)"> -->
+			<div class="window_head">
+				<span>{{ $index }} {{ window.state }} {{ window.tabs.length}} tabs</span>
+				
+				<span style="float:right;">
+					<span @click="newtab($event, window)" class="glyphicon glyphicon-plus icon_button" aria-hidden="true"></span>
+					<span @click="contextmenu_window($event, window)" class="glyphicon glyphicon-menu-hamburger icon_button" aria-hidden="true"></span>
+				</span>
+				
+			</div>
+			
+			<ul class="tabs_container">
+					<li v-for="tab in window.tabs" class="tab_block_container" zz_tab_index="{{ $index }}">
+						<!-- <div class="tab_block" @click="click(window, tab)" v-on:contextmenu="contextmenu_tab($event, window, tab)"> -->
+						<div class="tab_block" @click="click(window, tab)">
+							
+							<span style="width:85%;display:inline-block;">
+								<img class="tab_favicon" v-bind:src="getfavicon(tab)">
+								<span> {{ gettitle(tab) }} </span>
+								<span> {{ tab.preview }} </span>
+							</span>
+							
+							<span style="z-index:10;display:inline-block;float:right;">
+								<span @click="closetab($event, window, tab)" class="glyphicon glyphicon-remove icon_button" aria-hidden="true"></span>
+								<span @click="contextmenu_tab($event, window, tab)" class="glyphicon glyphicon-menu-hamburger icon_button" aria-hidden="true"></span>
+								
+							</span>
+						</div>
+					</li>
+			</ul>
+			
+		</div>
+	</div>
+	
+		
+	<div style="padding:10px 5% 10px 5%;">
+		<span id="options" class="glyphicon glyphicon-cog icon_button" aria-hidden="true"></span>
+		<!-- <span id="bookmark_all" class="glyphicon glyphicon-bookmark icon_button" aria-hidden="true"></span> -->
+	</div>
+	
+	<div style="color:rgba(50,50,50,0.2);text-align:center;">
+		&copy; zzdever
+	</div>
+	
+	<!-- <script src="3rd/jquery-3.1.0/jquery-3.1.0.min.js" type="text/javascript" charset="utf-8"></script> -->
+	<!-- <script src="3rd/bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script> -->
+	<!-- <script src="3rd/vue-1.0.28-csp/vue.min.js" type="text/javascript" charset="utf-8"></script> -->
+	<!-- <script src="3rd/jquery-ui-1.12.1/jquery-ui.min.js"></script> -->
+	
+	<script src="./popup.js"></script>
+	
+	<style>
+	.ui-icon[class*="icon_replace"] {
+	    /* Remove the jQuery UI Icon */
+	    background:none repeat scroll 0 0 transparent;
+	    /* Remove the jQuery UI Text Indent */
+	    text-indent:0; 
+	    /* Bump it up - jQuery UI is -8px */
+	    margin-top:-0.5em;
+	}
+	/* Allow use of icon-large to be properly aligned */
+	.ui-icon.icon-large {
+	    margin-top:-0.75em;
+	}
+	.ui-button-icon-only .ui-icon[class*="icon_replace"] {
+	    /* Bump it - jQuery UI is -8px */
+	    margin-left:-7px;
+	}
+	</style>
+	
+</body>
+</html>
